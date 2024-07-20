@@ -19,6 +19,7 @@ public class GameStatsServiceImpl implements GameStatsService {
     private final GameStatsRepository gameStatsRepository;
 
     @Override
+    @Transactional
     public GameStats createNewStatsForUser(User user) {
         GameStats stats = new GameStats();
         stats.setUser(user);
@@ -45,6 +46,7 @@ public class GameStatsServiceImpl implements GameStatsService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public GameStats getCurrentUserStats(User user) {
         return gameStatsRepository.findByUser(user)
                 .orElseGet(() -> createNewStatsForUser(user));

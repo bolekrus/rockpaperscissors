@@ -1,10 +1,9 @@
 package com.example.rockpaperscissors.controller;
 
 import com.example.rockpaperscissors.dto.UserDTO;
-import com.example.rockpaperscissors.entity.User;
-import com.example.rockpaperscissors.repository.UserRepository;
+import com.example.rockpaperscissors.service.UserService;
 import jakarta.validation.Valid;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -13,15 +12,10 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
+@RequiredArgsConstructor
 public class RegistrationController {
 
-    private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
-
-    public RegistrationController(UserRepository userRepository, PasswordEncoder passwordEncoder) {
-        this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
-    }
+    private final UserService userService;
 
     @GetMapping("/register")
     public String showRegistrationForm(Model model) {
@@ -36,15 +30,12 @@ public class RegistrationController {
             return "register";
         }
 
-        if (userRepository.findByUsername(userDTO.getUsername()).isPresent()) {
+        if (userService.isUsernameExists(userDTO.getUsername())) {
             model.addAttribute("error", "Username already exists");
             return "register";
         }
 
-        User user = new User();
-        user.setUsername(userDTO.getUsername());
-        user.setPasswordHash(passwordEncoder.encode(userDTO.getPassword()));
-        userRepository.save(user);
+        userService.registerUser(userDTO);
         return "redirect:/login";
     }
 }

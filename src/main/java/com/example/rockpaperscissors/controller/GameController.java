@@ -5,7 +5,7 @@ import com.example.rockpaperscissors.entity.User;
 import com.example.rockpaperscissors.enums.Move;
 import com.example.rockpaperscissors.enums.Result;
 import com.example.rockpaperscissors.service.GameStatsService;
-import com.example.rockpaperscissors.service.impl.UserDetailsServiceImpl;
+import com.example.rockpaperscissors.service.UserService;
 import com.example.rockpaperscissors.service.impl.GameServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -22,12 +22,11 @@ public class GameController {
 
     private final GameServiceImpl gameService;
     private final GameStatsService gameStatsService;
-    private final UserDetailsServiceImpl userDetailsService;
-    private final UserDetailsServiceImpl myUserDetailsService;
+    private final UserService userService;
 
     @GetMapping("/game")
     public String game(Model model) {
-        Optional<User> optionalUser = userDetailsService.getCurrentUser();
+        Optional<User> optionalUser = userService.getCurrentUser();
         if (optionalUser.isEmpty()) {
             model.addAttribute("error", "User not found. Please login again.");
             return "login";
@@ -44,7 +43,7 @@ public class GameController {
 
     @PostMapping("/game/play")
     public String playGame(@RequestParam("move") String move, Model model) {
-        Optional<User> optionalUser = myUserDetailsService.getCurrentUser();
+        Optional<User> optionalUser = userService.getCurrentUser();
         if (optionalUser.isEmpty()) {
             model.addAttribute("error", "User not found. Please login again.");
             return "login";

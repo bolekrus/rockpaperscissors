@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: rockpaperscissors
+  profiles:
+    active: local
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: validate
+flyway:
+  validateMigrationNaming: true
+  enabled: true

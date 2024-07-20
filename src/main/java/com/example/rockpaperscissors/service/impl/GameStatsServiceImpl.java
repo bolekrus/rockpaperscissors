@@ -46,7 +46,7 @@ public class GameStatsServiceImpl implements GameStatsService {
     }
 
     @Override
-    @Transactional(readOnly = true)
+    @Transactional
     public GameStats getCurrentUserStats(User user) {
         return gameStatsRepository.findByUser(user)
                 .orElseGet(() -> createNewStatsForUser(user));

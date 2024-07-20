@@ -7,10 +7,12 @@ import org.springframework.stereotype.Service;
 
 import java.util.EnumMap;
 import java.util.Map;
+import java.util.Random;
 
 @Service
 public class GameServiceImpl implements GameService {
 
+    private static final Random RANDOM = new Random();
     private static final Map<Move, Map<Move, Result>> resultsMap = new EnumMap<>(Move.class);
 
     static {
@@ -34,5 +36,11 @@ public class GameServiceImpl implements GameService {
     @Override
     public Result getResult(Move playerMove, Move computerMove) {
         return resultsMap.get(playerMove).get(computerMove);
+    }
+
+    @Override
+    public Move getRandomMove() {
+        Move[] moves = Move.values();
+        return moves[RANDOM.nextInt(moves.length)];
     }
 }

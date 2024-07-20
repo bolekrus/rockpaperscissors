@@ -1,30 +1,37 @@
 package com.example.rockpaperscissors.service;
 
-import com.example.rockpaperscissors.config.MyUserDetails;
+import com.example.rockpaperscissors.entity.GameStats;
 import com.example.rockpaperscissors.entity.User;
 import com.example.rockpaperscissors.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 
 import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class MyUserDetailsService implements UserDetailsService {
+public class GamePageService {
 
     private final UserRepository userRepository;
+    private final GameStatsService gameStatsService;
 
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public String loadGamePage(Model model) {
+        Optional<User> optionalUser = getCurrentUser();
+        if (optionalUser.isEmpty()) {
+            model.addAttribute("error", "User not found. Please login again.");
+            return "login";
+        }
 
-        Optional<User> user = userRepository.findByUsername(username);
-        return user.map(MyUserDetails::new)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found with username: " + username));
+        User user = optionalUser.get();
+        GameStats gameStats = gameStatsService.getCurrentUserStats(user);
+
+        model.addAttribute("username", user.getUsername());
+        model.addAttribute("stats", gameStats);
+
+        return "game";
     }
 
     public Optional<User> getCurrentUser() {

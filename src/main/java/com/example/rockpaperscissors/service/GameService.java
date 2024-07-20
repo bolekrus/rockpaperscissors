@@ -6,4 +6,6 @@ import com.example.rockpaperscissors.enums.Result;
 public interface GameService {
 
     Result getResult(Move playerMove, Move computerMove);
+
+    Move getRandomMove();
 }

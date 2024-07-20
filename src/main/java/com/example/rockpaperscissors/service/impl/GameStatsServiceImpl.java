@@ -5,19 +5,17 @@ import com.example.rockpaperscissors.entity.User;
 import com.example.rockpaperscissors.enums.Result;
 import com.example.rockpaperscissors.repository.GameStatsRepository;
 import com.example.rockpaperscissors.service.GameStatsService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
 import java.util.function.Consumer;
 
 @Service
+@RequiredArgsConstructor
 public class GameStatsServiceImpl implements GameStatsService {
 
     private final GameStatsRepository gameStatsRepository;
-
-    public GameStatsServiceImpl(GameStatsRepository gameStatsRepository) {
-        this.gameStatsRepository = gameStatsRepository;
-    }
 
     @Override
     public GameStats createNewStatsForUser(User user) {
@@ -40,5 +38,11 @@ public class GameStatsServiceImpl implements GameStatsService {
 
         updateStrategies.get(result).accept(gameStats);
         gameStats.setTotalGames(gameStats.getTotalGames() + 1);
+    }
+
+    @Override
+    public GameStats getCurrentUserStats(User user) {
+        return gameStatsRepository.findByUser(user)
+                .orElseGet(() -> createNewStatsForUser(user));
     }
 }

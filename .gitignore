@@ -9,3 +9,6 @@ target/
 *.iml
 *.ipr
 
+/mvnw
+/mvnw.cmd
+/.mvn/wrapper/maven-wrapper.properties

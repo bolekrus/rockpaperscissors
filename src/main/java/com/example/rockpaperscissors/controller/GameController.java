@@ -5,7 +5,7 @@ import com.example.rockpaperscissors.entity.User;
 import com.example.rockpaperscissors.enums.Move;
 import com.example.rockpaperscissors.enums.Result;
 import com.example.rockpaperscissors.service.GameStatsService;
-import com.example.rockpaperscissors.service.MyUserDetailsService;
+import com.example.rockpaperscissors.service.impl.UserDetailsServiceImpl;
 import com.example.rockpaperscissors.service.impl.GameServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -22,8 +22,8 @@ public class GameController {
 
     private final GameServiceImpl gameService;
     private final GameStatsService gameStatsService;
-    private final MyUserDetailsService userDetailsService;
-    private final MyUserDetailsService myUserDetailsService;
+    private final UserDetailsServiceImpl userDetailsService;
+    private final UserDetailsServiceImpl myUserDetailsService;
 
     @GetMapping("/game")
     public String game(Model model) {

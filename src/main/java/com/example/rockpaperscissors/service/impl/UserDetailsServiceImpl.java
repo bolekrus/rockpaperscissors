@@ -1,4 +1,4 @@
-package com.example.rockpaperscissors.service;
+package com.example.rockpaperscissors.service.impl;
 
 import com.example.rockpaperscissors.config.MyUserDetails;
 import com.example.rockpaperscissors.entity.User;
@@ -15,7 +15,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class MyUserDetailsService implements UserDetailsService {
+public class UserDetailsServiceImpl implements UserDetailsService {
 
     private final UserRepository userRepository;
 

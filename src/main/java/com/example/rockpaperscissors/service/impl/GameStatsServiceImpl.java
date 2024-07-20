@@ -7,6 +7,7 @@ import com.example.rockpaperscissors.repository.GameStatsRepository;
 import com.example.rockpaperscissors.service.GameStatsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Map;
 import java.util.function.Consumer;
@@ -29,6 +30,7 @@ public class GameStatsServiceImpl implements GameStatsService {
     }
 
     @Override
+    @Transactional
     public void updateGameStats(GameStats gameStats, Result result) {
         Map<Result, Consumer<GameStats>> updateStrategies = Map.of(
                 Result.WIN, stats -> stats.setGamesWin(stats.getGamesWin() + 1),
@@ -38,6 +40,8 @@ public class GameStatsServiceImpl implements GameStatsService {
 
         updateStrategies.get(result).accept(gameStats);
         gameStats.setTotalGames(gameStats.getTotalGames() + 1);
+
+        gameStatsRepository.save(gameStats);
     }
 
     @Override

@@ -1,17 +1,22 @@
-name: Diagnose APT Environment
+name: Check Package Availability
 
 on:
   workflow_dispatch:
 
 jobs:
-  diagnose:
+  check-packages:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
-      - name: Check All Package Availability
+      - name: Setup Ubuntu (Сheck packages)
         run: |
           sudo apt-get update
-          for package in libgtk2.0-0 libgtk-3-0 libgbm-dev libnotify-dev libnss3 libxss1 libasound2 libxtst6 xauth xvfb; do
-            echo "Checking package: $package"
-            apt-cache policy $package || echo "$package not found in repositories"
-            sudo apt-get install --dry-run $package || echo "Failed to install: $package"
+          PACKAGES="libgconf-2-4 libatk1.0-0 libatk-bridge2.0-0 libgdk-pixbuf2.0-0 libgtk-3-0 libgbm-dev libnss3-dev libxss-dev libasound2"
+          for package in $PACKAGES; do
+           echo "Installing $package..."
+           if sudo apt-get install -y -t jammy $package; then
+             echo "$package installed successfully."
+           else
+             echo "Failed to install $package." >&2
+           fi
           done

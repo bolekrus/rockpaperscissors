@@ -11,12 +11,5 @@ jobs:
       - name: Setup Ubuntu (Сheck packages)
         run: |
           sudo apt-get update
-          PACKAGES="libgconf-2-4 libatk1.0-0 libatk-bridge2.0-0 libgdk-pixbuf2.0-0 libgtk-3-0 libgbm-dev libnss3-dev libxss-dev libasound2"
-          for package in $PACKAGES; do
-           echo "Installing $package..."
-           if sudo apt-get install -y $package; then
-             echo "$package installed successfully."
-           else
-             echo "Failed to install $package." >&2
-           fi
-          done
+          sudo apt-get install -y libgconf-2-4 libatk1.0-0 libatk-bridge2.0-0 libgdk-pixbuf2.0-0 libgtk-3-0 libgbm-dev libnss3-dev libxss-dev libasound2
+          sudo apt-get clean

@@ -5,7 +5,7 @@ on:
 
 jobs:
   check-packages:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     timeout-minutes: 10
     steps:
       - name: Setup Ubuntu (Сheck packages)
@@ -14,7 +14,7 @@ jobs:
           PACKAGES="libgconf-2-4 libatk1.0-0 libatk-bridge2.0-0 libgdk-pixbuf2.0-0 libgtk-3-0 libgbm-dev libnss3-dev libxss-dev libasound2"
           for package in $PACKAGES; do
            echo "Installing $package..."
-           if sudo apt-get install -y -t jammy $package; then
+           if sudo apt-get install -y $package; then
              echo "$package installed successfully."
            else
              echo "Failed to install $package." >&2
